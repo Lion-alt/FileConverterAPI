@@ -1,4 +1,4 @@
-import { logDoneMessage } from "../utils/logger/logger";
+import { logDoneMessage } from "../utils/logger.js";
 
 
 
