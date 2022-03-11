@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "start:dev": "nodemon dist/server.js",
-        "start:prod": "node dist/server.js",
+        "start": "node dist/server.js",
         "build": "tsc",
         "build:watch": "tsc --watch"
     },

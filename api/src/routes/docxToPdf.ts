@@ -2,17 +2,21 @@ import express from "express";
 import multer from "multer";
 import { docxToHtml } from "../docxtohtml/docxToHtmlHandler.js";
 import { generatePdfFromHtml } from "../htmlToPdf/htmlToPdf.js";
-import {readFile} from 'node:fs/promises'
 const router = express.Router();
+const upload = multer()
 
-router.post("/", multer().single("docxFile"), async (req, res) => {
-/*   if (req?.files == undefined) {
-    res.sendStatus(400);
-    return;
-  } */
-  console.log('here')
-  const docxBuffer = req?.file ?? (await readFile('mydocx.docx')).buffer ;
-  generatePdfFromHtml(await docxToHtml(docxBuffer), res);
+router.post("/", upload.single('file'), async (req, res) => {
+  const {api_key} = req?.query
+  const docxBuffer: any = req?.file
+  if(docxBuffer?.buffer == undefined) {
+    res.sendStatus(400)
+    return
+  }
+  const buffer = Buffer.from(await docxBuffer.buffer, "binary")
+  console.log(buffer)
+  const html = await docxToHtml(buffer)
+  console.log(html)
+  generatePdfFromHtml(html, res);
 });
 
-export default router
+export default router;

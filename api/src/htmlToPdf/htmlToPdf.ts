@@ -17,6 +17,7 @@ export const generatePdfFromHtml: Function = async (
 ): Promise<void> => {
   create(html, configureOptionsForPdf()).toStream(
     (err: unknown, result: ReadStreamType) => {
+      console.log(result)
       result.pipe(res);
     }
   );
