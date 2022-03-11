@@ -8,10 +8,6 @@ const upload = multer()
 router.post("/", upload.single('file'), async (req, res) => {
   const {api_key} = req?.query
   const docxBuffer: any = req?.file
-  if(docxBuffer?.buffer == undefined) {
-    res.sendStatus(400)
-    return
-  }
   const buffer = Buffer.from(await docxBuffer.buffer, "binary")
   console.log(buffer)
   const html = await docxToHtml(buffer)
