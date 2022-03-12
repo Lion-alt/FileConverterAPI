@@ -6,13 +6,17 @@ const router = express.Router();
 const upload = multer()
 
 router.post("/", upload.single('file'), async (req, res) => {
-  const {api_key} = req?.query
   const docxBuffer: any = req?.file
-  const buffer = Buffer.from(await docxBuffer.buffer, "binary")
-  console.log(buffer)
-  const html = await docxToHtml(buffer)
-  console.log(html)
-  generatePdfFromHtml(html, res);
+  try {
+    const buffer = Buffer.from(await docxBuffer.buffer, "binary")
+    const html = await docxToHtml(buffer)
+    console.log(html)
+    generatePdfFromHtml(html, res);
+  }
+  catch (err) {
+    res.status(500).send(err)
+  }
+
 });
 
 export default router;
