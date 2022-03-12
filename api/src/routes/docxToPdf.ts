@@ -6,15 +6,16 @@ const router = express.Router();
 const upload = multer()
 
 router.post("/", upload.single('file'), async (req, res) => {
-  const docxBuffer: any = req?.file
+  const docxBuffer: any = req?.body?.file
   try {
-    const buffer = Buffer.from(await docxBuffer.buffer, "binary")
-    const html = await docxToHtml(buffer)
-    console.log(html)
+    const buffer = Buffer.from(await docxBuffer, "base64")
+    const html = await docxToHtml(buffer, res)
     generatePdfFromHtml(html, res);
   }
   catch (err) {
-    res.status(500).send(err)
+    console.error(err)
+
+    res.status(500).send({data: err})
   }
 
 });

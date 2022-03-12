@@ -12,12 +12,21 @@ export const generatePdfFromHtml: Function = async (
   html: string,
   res: Express.Response | any
 ): Promise<void> => {
-  create(html, configureOptionsForPdf()).toStream(
+  if(html == undefined || html === "") {
+    res.sendStatus(500);
+    return
+  } 
+  try {
+      create(html ? html : '', configureOptionsForPdf()).toStream(
     (err: unknown, result: ReadStreamType) => {
       if(err) {
-        res.status(500).send(err);
+        res.status(500).send({data: (err as {message: string}).message});
       }
       result.pipe(res);
     }
   );
+  } catch (err) {
+    res.status(500).send({data: err })
+  }
+
 };

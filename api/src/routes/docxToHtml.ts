@@ -6,7 +6,7 @@ const upload = multer()
 
 router.post('/', upload.single('file'), async (req, res) => {
     const file = req?.file
-    const html = await docxToHtml(file?.buffer)
+    const html = await docxToHtml(file?.buffer, res)
     res.send({data: html})
 })
 
